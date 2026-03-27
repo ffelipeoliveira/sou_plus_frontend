@@ -1,0 +1,29 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<!-- Created using Krita: https://krita.org -->
+<svg xmlns="http://www.w3.org/2000/svg" 
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:krita="http://krita.org/namespaces/svg/krita"
+    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+    width="107.52pt"
+    height="59.52pt"
+    viewBox="0 0 107.52 59.52">
+<defs>
+  <linearGradient id="gradient0" gradientUnits="objectBoundingBox" x1="0.658730031631451" y1="0" x2="0.642857211766112" y2="1" spreadMethod="pad">
+   <stop stop-color="#707cff" offset="0" stop-opacity="1"/>
+   <stop stop-color="#5463ff" offset="1" stop-opacity="1"/>
+  </linearGradient>
+  <linearGradient id="gradient1" gradientUnits="objectBoundingBox" x1="0.666666643446916" y1="0" x2="0.666666678276543" y2="1" spreadMethod="pad">
+   <stop stop-color="#5866ff" offset="0" stop-opacity="1"/>
+   <stop stop-color="#5463ff" offset="1" stop-opacity="1"/>
+  </linearGradient>
+  <linearGradient id="gradient2" gradientUnits="objectBoundingBox" x1="0.801979950221163" y1="0" x2="0.712871375846778" y2="1" spreadMethod="pad">
+   <stop stop-color="#499dff" offset="0" stop-opacity="1"/>
+   <stop stop-color="#5665ff" offset="0.574324324324324" stop-opacity="1"/>
+  </linearGradient>
+ </defs>
+<text id="shape0" krita:useRichText="true" text-rendering="auto" krita:textVersion="3" transform="translate(72.359997479728, 27.1999997492267)" fill="#000000" stroke-opacity="0" stroke="#000000" stroke-width="0" stroke-linecap="square" stroke-linejoin="bevel" style="text-align: start;text-align-last: auto;font-size: 12;"></text><rect id="shape1" fill="#eaeaea" fill-rule="evenodd" stroke="#eaeaea" stroke-width="0.0048" stroke-linecap="square" stroke-linejoin="bevel" width="78.96" height="60.72"/><rect id="shape2" transform="matrix(0.818548516130786 0 0 1 72.9599976519493 0)" fill="url(#gradient0)" fill-rule="evenodd" stroke="#7884ff" stroke-width="0.0048" stroke-linecap="square" stroke-linejoin="bevel" width="14.88" height="59.52"/><rect id="shape3" transform="matrix(0.891666627478081 0 0 1 84.0000000774716 0)" fill="url(#gradient1)" fill-rule="evenodd" stroke="#707cff" stroke-width="0.0048" stroke-linecap="square" stroke-linejoin="bevel" width="14.4" height="59.52"/><rect id="shape4" transform="matrix(1.09756125902918 0 0 1 96.6599966709189 0)" fill="url(#gradient2)" fill-rule="evenodd" stroke="#4ea8ff" stroke-width="0.0048" stroke-linecap="square" stroke-linejoin="bevel" width="9.84" height="59.52"/><g id="group0" transform="matrix(0.8224985456228 0 0 0.81180555175365 2.85084594790587 50.8549998436758)" fill="none">
+  <path id="shape5" fill="#1a1a1a" stroke-opacity="0" stroke="#000000" stroke-width="0" stroke-linecap="square" stroke-linejoin="bevel" d="M13.2487 0.72C9.40875 0.72 6.50437 -0.371875 4.53562 -2.55563C2.56688 -4.73937 1.5825 -7.87125 1.5825 -11.9512L1.5825 -14.8312L9.07125 -14.8312L9.07125 -11.3775C9.07125 -8.1125 10.44 -6.48 13.1775 -6.48C14.52 -6.48 15.5394 -6.87625 16.2356 -7.66875C16.9319 -8.46125 17.28 -9.745 17.28 -11.52C17.28 -13.6325 16.8 -15.4925 15.84 -17.1C14.88 -18.7075 13.1037 -20.64 10.5113 -22.8975C7.24875 -25.7775 4.96938 -28.3812 3.67312 -30.7087C2.37688 -33.0362 1.72875 -35.6638 1.72875 -38.5912C1.72875 -42.5762 2.73687 -45.6606 4.75312 -47.8444C6.76938 -50.0281 9.6975 -51.12 13.5375 -51.12C17.3275 -51.12 20.195 -50.0281 22.14 -47.8444C24.085 -45.6606 25.0575 -42.5287 25.0575 -38.4487L25.0575 -36.36L17.5687 -36.36L17.5687 -38.9513C17.5687 -40.6787 17.2325 -41.9387 16.56 -42.7312C15.8875 -43.5237 14.9038 -43.92 13.6087 -43.92C10.9688 -43.92 9.64875 -42.3125 9.64875 -39.0975C9.64875 -37.2725 10.1406 -35.5681 11.1244 -33.9844C12.1081 -32.4006 13.8962 -30.48 16.4887 -28.2225C19.8012 -25.3425 22.0812 -22.7269 23.3287 -20.3756C24.5763 -18.0244 25.2 -15.265 25.2 -12.0975C25.2 -7.9675 24.18 -4.79875 22.14 -2.59125C20.1 -0.38375 17.1363 0.72 13.2487 0.72M41.1825 0.72C37.295 0.72 34.3194 -0.38375 32.2556 -2.59125C30.1919 -4.79875 29.16 -7.91875 29.16 -11.9512L29.16 -38.4487C29.16 -42.4813 30.1919 -45.6013 32.2556 -47.8087C34.3194 -50.0162 37.295 -51.12 41.1825 -51.12C45.07 -51.12 48.0456 -50.0162 50.1094 -47.8087C52.1731 -45.6013 53.205 -42.4813 53.205 -38.4487L53.205 -11.9512C53.205 -7.91875 52.1731 -4.79875 50.1094 -2.59125C48.0456 -0.38375 45.07 0.72 41.1825 0.72M41.1825 -6.48C43.9175 -6.48 45.285 -8.13625 45.285 -11.4488L45.285 -38.9513C45.285 -42.2638 43.9175 -43.92 41.1825 -43.92C38.4475 -43.92 37.08 -42.2638 37.08 -38.9513L37.08 -11.4488C37.08 -8.13625 38.4475 -6.48 41.1825 -6.48M70.0537 0.72C66.2137 0.72 63.2856 -0.371875 61.2694 -2.55563C59.2531 -4.73937 58.245 -7.87125 58.245 -11.9512L58.245 -50.4L66.165 -50.4L66.165 -11.3775C66.165 -9.6475 66.5131 -8.39875 67.2094 -7.63125C67.9056 -6.86375 68.9025 -6.48 70.2 -6.48C71.495 -6.48 72.4906 -6.86375 73.1869 -7.63125C73.8831 -8.39875 74.2312 -9.6475 74.2312 -11.3775L74.2312 -50.4L81.8625 -50.4L81.8625 -11.9512C81.8625 -7.87125 80.8544 -4.73937 78.8381 -2.55563C76.8219 -0.371875 73.8937 0.72 70.0537 0.72" sodipodi:nodetypes="cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"/>
+  <path id="shape6" fill="#1a1a1a" stroke-opacity="0" stroke="#000000" stroke-width="0" stroke-linecap="square" stroke-linejoin="bevel" d="M101.699 -22.3912L92.0503 -22.3912L93.4509 -28.0087L103.1 -28.0087L105.523 -37.7287L111.141 -37.7287L108.717 -28.0087L118.366 -28.0087L116.965 -22.3912L107.317 -22.3912L104.858 -12.5287L99.24 -12.5287L101.699 -22.3912" sodipodi:nodetypes="ccccccccccccc"/>
+ </g>
+</svg>

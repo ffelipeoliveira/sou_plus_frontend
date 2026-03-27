@@ -1,0 +1,16 @@
+.navbar {
+	z-index: 3;;
+	width: 99%;
+	display: flex;
+	padding: 5px;
+	height: 50px;
+	align-items: center;
+	position: fixed;
+	top: 0;
+	background: linear-gradient(180deg, var(--bg-color) 10%, var(--bg-color-50) 60%, #00000000 100%);
+}
+
+.wrapper {
+	margin-bottom: 50px;
+}
+

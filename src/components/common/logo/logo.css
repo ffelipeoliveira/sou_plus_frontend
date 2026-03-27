@@ -1,0 +1,44 @@
+.logo {
+  width: 120px;
+  height: 31px;
+  opacity: 100%;
+  transition: all 0.3s;
+}
+.logo img {
+  height: 31px;
+}
+.logo h2 {
+  margin: 0;
+  margin-top: -13px;
+  margin-left: 0px;
+  white-space: nowrap;
+  opacity: 0;
+}
+.logo:hover {
+  filter: saturate(200%);
+  transition: all 0.3s;
+}
+.logo:hover .effect-start-1 {
+  transition-delay: 0ms;
+  opacity: 1;
+}
+.logo:hover .effect-end-1 {
+  transition-delay: 200ms;
+  opacity: 0;
+}
+.logo:hover .effect-start-2 {
+  transition-delay: 100ms;
+  opacity: 1;
+}
+.logo:hover .effect-end-2 {
+  transition-delay: 300ms;
+  opacity: 0;
+}
+.logo:hover .effect-start-3 {
+  transition-delay: 200ms;
+  opacity: 1;
+}
+.logo:hover .effect-end-3 {
+  transition-delay: 400ms;
+  opacity: 0;
+}/*# sourceMappingURL=logo.css.map */
