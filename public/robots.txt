@@ -1,0 +1,16 @@
+# Allow search engines to crawl the site
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /auth/
+Disallow: /private/
+Disallow: /admin/
+
+# Sitemap location
+Sitemap: https://sou-mais-chat.vercel.app
+
+# Crawl delay for bots (respectful crawling)
+Crawl-delay: 1
+
+# Specify clean URLs
+Host: https://sou-mais-chat.vercel.app

@@ -1,12 +1,12 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useSetAtom, useAtom } from 'jotai';
-import { userAtom, isAuthenticatedAtom } from './utils/atoms';
-import { useEffect, useState } from 'react';
+import { userAtom, isAuthenticatedAtom, authLoadingAtom } from './utils/atoms';
+import { useEffect } from 'react';
 import { userApi } from './services/api';
-import Homepage from './pages/Home/Home';
+import Homepage from './pages/Home';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
-import PostDetail from './pages/PostDetail';
+import MessageDetail from './pages/MessageDetail';
 import NotFound from './pages/NotFound';
 import Navbar from './components/layout/navbar/Navbar';
 import FullScreenLoading from './components/common/loading/FullScreenLoading';
@@ -14,13 +14,13 @@ import FullScreenLoading from './components/common/loading/FullScreenLoading';
 function App() {
     const [user, setUser] = useAtom(userAtom);
     const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
-    const [isLoading, setIsLoading] = useState(true);
+    const [authLoading, setAuthLoading] = useAtom(authLoadingAtom);
 
     useEffect(() => {
         const checkAuth = async () => {
             const token = localStorage.getItem('token');
             if (!token) {
-                setIsLoading(false);
+                setAuthLoading(false);
                 return;
             }
             
@@ -33,20 +33,20 @@ function App() {
                 localStorage.removeItem('token');
                 setIsAuthenticated(false);
             } finally {
-                setIsLoading(false);
+                setAuthLoading(false);
             }
         };
         
         checkAuth();
     }, []);
 
-    if (isLoading) {
+    if (authLoading) {
         return <FullScreenLoading />;
     }
 
     return (
         <BrowserRouter>
-            <Navbar />
+            {isAuthenticated && <Navbar />}
             <main>
                 <Routes>
                     <Route 
@@ -62,8 +62,8 @@ function App() {
                         element={!isAuthenticated ? <RegisterPage /> : <Navigate to="/" />} 
                     />
                     <Route 
-                        path="/post/:id" 
-                        element={isAuthenticated ? <PostDetail /> : <Navigate to="/login" />} 
+                        path="/chat/:userId" 
+                        element={isAuthenticated ? <MessageDetail /> : <Navigate to="/login" />} 
                     />
                     <Route path="*" element={<NotFound />} />
                 </Routes>

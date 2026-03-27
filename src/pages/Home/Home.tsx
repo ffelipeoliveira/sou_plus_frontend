@@ -1,129 +1,295 @@
 import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
-import { postsAtom, notificationAtom } from '../../utils/atoms';
-import { getPosts, deletePost, createPost, updatePost } from '../../services/postService'; // Add updatePost
-import Post from '../../components/features/post/Post';
-import PostForm from '../../components/layout/form/Form';
-import { FaPlus } from "react-icons/fa6";
-import type { Post as PostType } from '../../types/post';
+import { userAtom, isAuthenticatedAtom } from '../../utils/atoms';
+import { FaPlus, FaComments, FaUsers } from "react-icons/fa6";
+import MessageList from '../../components/features/messages/MessageList';
+import ConversationList from '../../components/features/messages/ConversationList';
+import type { Message, Conversation } from '../../types/message';
 
 function Home() {
-  const [posts, setPosts] = useAtom(postsAtom);
-  const [, setNotification] = useAtom(notificationAtom);
-  const [showForm, setShowForm] = useState(false);
-  const [editingPost, setEditingPost] = useState<PostType | null>(null); // Track which post is being edited
+    const [user] = useAtom(userAtom);
+    const [isAuthenticated] = useAtom(isAuthenticatedAtom);
+    const [activeTab, setActiveTab] = useState<'conversations' | 'messages'>('conversations');
+    const [selectedUser, setSelectedUser] = useState<number | null>(null);
+    const [conversations, setConversations] = useState<Conversation[]>([]);
+    const [messages, setMessages] = useState<Message[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
-  const fetchPosts = async () => {
-    try {
-      const posts = await getPosts();
-      setPosts(posts);
-    } catch (error) {
-      setNotification({message: 'Erro ao carregar posts', type: 'error'});
+    // Fetch conversations on mount
+    useEffect(() => {
+        if (isAuthenticated) {
+            fetchConversations();
+        }
+    }, [isAuthenticated]);
+
+    const fetchConversations = async () => {
+        setLoading(true);
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/messages/conversations`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            
+            if (!response.ok) throw new Error('Failed to fetch conversations');
+            
+            const data = await response.json();
+            setConversations(data);
+        } catch (err) {
+            setError('Erro ao carregar conversas');
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const fetchMessages = async (userId: number) => {
+        setLoading(true);
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/messages/conversation/${userId}`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            
+            if (!response.ok) throw new Error('Failed to fetch messages');
+            
+            const data = await response.json();
+            setMessages(data);
+            setSelectedUser(userId);
+            setActiveTab('messages');
+        } catch (err) {
+            setError('Erro ao carregar mensagens');
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const sendMessage = async (content: string) => {
+        if (!selectedUser) return;
+        
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/messages`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify({
+                    receiverId: selectedUser,
+                    content
+                })
+            });
+            
+            if (!response.ok) throw new Error('Failed to send message');
+            
+            const newMessage = await response.json();
+            setMessages(prev => [...prev, newMessage]);
+            
+            // Refresh conversations to update last message
+            fetchConversations();
+        } catch (err) {
+            setError('Erro ao enviar mensagem');
+            console.error(err);
+        }
+    };
+
+    if (!isAuthenticated) {
+        return null; // Will redirect from App.tsx
     }
-  };
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
+    return (
+        <div className="home-container">
+            <div className="home-header">
+                <h1 className="bebas-neue">
+                    Olá, {user?.fullName || user?.username}!
+                </h1>
+                <p>Bem-vindo ao NOT REAL Chat</p>
+            </div>
 
-  const handleDelete = async (id: number) => {
-    try {
-      await deletePost(id);
-      setPosts(prevPosts => prevPosts.filter(post => post.id !== id));
-      setNotification({ message: 'Post excluído', type: 'success' });
-    } catch (error) {
-      setNotification({ message: 'Falha ao deletar post', type: 'error' });
-    }
-  };
+            <div className="home-tabs">
+                <button 
+                    className={`tab ${activeTab === 'conversations' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('conversations')}
+                >
+                    <FaUsers />
+                    <span>Conversas</span>
+                </button>
+                {selectedUser && (
+                    <button 
+                        className={`tab ${activeTab === 'messages' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('messages')}
+                    >
+                        <FaComments />
+                        <span>Mensagens</span>
+                    </button>
+                )}
+            </div>
 
-  const handleCreatePost = async (postData: { title: string; body: string }) => {
-    try {
-      console.log('Creating post with data:', postData);
-      const createPostData = {
-        ...postData,
-        userId: 1,
-      };
-     
-      console.log('Sending to API:', createPostData);
-     
-      const newPost = await createPost(createPostData);
-      console.log('Post created successfully:', newPost);
-     
-      setPosts(prevPosts => [newPost, ...prevPosts]);
-     
-      setShowForm(false);
-      setNotification({ message: 'Post criado com sucesso', type: 'success' });
-    } catch (error) {
-      console.error('Error in handleCreatePost:', error);
-      setNotification({ message: 'Falha ao criar post', type: 'error' });
-    }
-  };
+            {error && (
+                <div className="error-message">
+                    {error}
+                    <button onClick={() => setError(null)}>X</button>
+                </div>
+            )}
 
-  const handleEdit = (id: number) => {
-    const postToEdit = posts.find(post => post.id === id);
-    if (postToEdit) {
-      setEditingPost(postToEdit);
-      setShowForm(true);
-    }
-  };
+            {loading && (
+                <div className="loading-container">
+                    <div className="loading-spinner"></div>
+                </div>
+            )}
 
-  const handleUpdatePost = async (postData: { title: string; body: string }) => {
-    if (!editingPost) return;
-    
-    try {
-      console.log('Updating post with data:', postData);
-      
-      const updatedPost = await updatePost(editingPost.id, postData);
-      console.log('Post updated successfully:', updatedPost);
-      
-      setPosts(prevPosts => 
-        prevPosts.map(post => 
-          post.id === editingPost.id 
-            ? { ...updatedPost, updatedAt: new Date().toISOString() }
-            : post
-        )
-      );
-      
-      setShowForm(false);
-      setEditingPost(null);
-      setNotification({ message: 'Post atualizado com sucesso', type: 'success' });
-    } catch (error) {
-      console.error('Error in handleUpdatePost:', error);
-      setNotification({ message: 'Falha ao atualizar post', type: 'error' });
-    }
-  };
+            {!loading && activeTab === 'conversations' && (
+                <div className="conversations-section">
+                    <ConversationList 
+                        conversations={conversations}
+                        onSelectConversation={fetchMessages}
+                        currentUserId={user?.id}
+                    />
+                </div>
+            )}
 
-  const handleCancel = () => {
-    setShowForm(false);
-    setEditingPost(null);
-  };
+            {!loading && activeTab === 'messages' && selectedUser && (
+                <div className="messages-section">
+                    <MessageList 
+                        messages={messages}
+                        currentUserId={user?.id}
+                        onSendMessage={sendMessage}
+                        onBack={() => {
+                            setActiveTab('conversations');
+                            setSelectedUser(null);
+                            setMessages([]);
+                        }}
+                    />
+                </div>
+            )}
 
-  const handleFormSuccess = editingPost ? handleUpdatePost : handleCreatePost;
+            <style>{`
+                .home-container {
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
 
-  return (
-    <div className="home">
-      <div className="create-post">
-        <div className="create-post-background"></div>
-        <button onClick={() => setShowForm(!showForm)}>
-          <div className={showForm ? 'rotated-45' : 'rotated-0'}>
-            <FaPlus className='icon'/>
-          </div>
-        </button>
-      </div>
-      {showForm && (
-        <PostForm
-          post={editingPost || undefined} 
-          onSuccess={handleFormSuccess}
-          onCancel={handleCancel}
-        />
-      )}
-      <div className="posts">
-        {posts.map(post => (
-          <Post key={post.id} post={post} onDelete={handleDelete} onEdit={handleEdit}/>
-        ))}
-      </div>
-    </div>
-  )
+                .home-header {
+                    text-align: center;
+                    margin-bottom: 30px;
+                    padding: 20px;
+                    background: var(--bg-color-sub);
+                    border-radius: 12px;
+                }
+
+                .home-header h1 {
+                    margin: 0 0 10px 0;
+                    font-size: 2rem;
+                }
+
+                .home-header p {
+                    margin: 0;
+                    opacity: 0.8;
+                }
+
+                .home-tabs {
+                    display: flex;
+                    gap: 10px;
+                    margin-bottom: 20px;
+                    border-bottom: 2px solid var(--bg-color-sub);
+                    padding-bottom: 10px;
+                }
+
+                .tab {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    padding: 10px 20px;
+                    background: transparent;
+                    border: none;
+                    color: var(--text-color);
+                    cursor: pointer;
+                    transition: all 0.3s;
+                    border-radius: 8px;
+                    font-size: 1rem;
+                }
+
+                .tab:hover {
+                    background: var(--bg-color-sub);
+                }
+
+                .tab.active {
+                    background: var(--color);
+                    color: white;
+                }
+
+                .conversations-section,
+                .messages-section {
+                    background: var(--bg-color-sub);
+                    border-radius: 12px;
+                    padding: 20px;
+                    min-height: 500px;
+                }
+
+                .error-message {
+                    background: var(--error-color);
+                    color: white;
+                    padding: 12px;
+                    border-radius: 8px;
+                    margin-bottom: 20px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+
+                .error-message button {
+                    background: transparent;
+                    border: none;
+                    color: white;
+                    cursor: pointer;
+                    font-size: 1.2rem;
+                }
+
+                .loading-container {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    min-height: 400px;
+                }
+
+                .loading-spinner {
+                    width: 40px;
+                    height: 40px;
+                    border: 3px solid var(--bg-color-sub);
+                    border-top-color: var(--color);
+                    border-radius: 50%;
+                    animation: spin 1s linear infinite;
+                }
+
+                @keyframes spin {
+                    to { transform: rotate(360deg); }
+                }
+
+                @media (max-width: 768px) {
+                    .home-container {
+                        padding: 10px;
+                    }
+
+                    .tab span {
+                        display: none;
+                    }
+
+                    .tab {
+                        padding: 10px;
+                        font-size: 1.2rem;
+                    }
+
+                    .home-header h1 {
+                        font-size: 1.5rem;
+                    }
+                }
+            `}</style>
+        </div>
+    );
 }
 
 export default Home;

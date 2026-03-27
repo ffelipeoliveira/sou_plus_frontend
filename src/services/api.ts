@@ -12,12 +12,25 @@ api.interceptors.request.use((config) => {
     return config;
 });
 
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response?.status === 401) {
+            // Token expired or invalid
+            localStorage.removeItem('token');
+            window.location.href = '/login';
+        }
+        return Promise.reject(error);
+    }
+);
+
 export interface BackendUser {
     id: number;
     username: string;
     email: string;
     fullName: string;
     profilePicture: string;
+    createdAt?: string;
 }
 
 export interface LoginCredentials {
@@ -33,18 +46,18 @@ export interface RegisterData {
 }
 
 export const authApi = {
-    login: async (credentials: LoginCredentials) => {
+    login: async (credentials: LoginCredentials): Promise<BackendUser> => {
         const response = await api.post('/auth/login', credentials);
         const { token, user } = response.data;
         localStorage.setItem('token', token);
-        return user as BackendUser;
+        return user;
     },
     
-    register: async (data: RegisterData) => {
+    register: async (data: RegisterData): Promise<BackendUser> => {
         const response = await api.post('/auth/register', data);
         const { token, user } = response.data;
         localStorage.setItem('token', token);
-        return user as BackendUser;
+        return user;
     },
     
     logout: () => {
@@ -53,14 +66,21 @@ export const authApi = {
 };
 
 export const userApi = {
-    getCurrentUser: async () => {
+    getCurrentUser: async (): Promise<BackendUser> => {
         const response = await api.get('/users/me');
-        return response.data as BackendUser;
+        return response.data;
     },
     
-    updateProfile: async (data: Partial<BackendUser>) => {
+    updateProfile: async (data: Partial<BackendUser>): Promise<BackendUser> => {
         const response = await api.put('/users/me', data);
-        return response.data as BackendUser;
+        return response.data;
+    },
+    
+    searchUsers: async (query: string, limit: number = 10): Promise<BackendUser[]> => {
+        const response = await api.get('/users/search', {
+            params: { q: query, limit }
+        });
+        return response.data;
     }
 };
 
