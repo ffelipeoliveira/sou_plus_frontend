@@ -1,10 +1,12 @@
 import axios from 'axios';
+import type { AppUser } from '../types/user';
+import { convertToAppUser } from '../types/user'; // Remove 'type' from this import
 
-const api = axios.create({
+const backendApi = axios.create({
     baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
 });
 
-api.interceptors.request.use((config) => {
+backendApi.interceptors.request.use((config) => {
     const token = localStorage.getItem('token');
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
@@ -12,11 +14,10 @@ api.interceptors.request.use((config) => {
     return config;
 });
 
-api.interceptors.response.use(
+backendApi.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response?.status === 401) {
-            // Token expired or invalid
             localStorage.removeItem('token');
             window.location.href = '/login';
         }
@@ -28,9 +29,11 @@ export interface BackendUser {
     id: number;
     username: string;
     email: string;
-    fullName: string;
-    profilePicture: string;
-    createdAt?: string;
+    full_name: string;
+    profile_picture: string;
+    phone?: string;
+    created_at?: string;
+    updated_at?: string;
 }
 
 export interface LoginCredentials {
@@ -46,18 +49,18 @@ export interface RegisterData {
 }
 
 export const authApi = {
-    login: async (credentials: LoginCredentials): Promise<BackendUser> => {
-        const response = await api.post('/auth/login', credentials);
+    login: async (credentials: LoginCredentials): Promise<AppUser> => {
+        const response = await backendApi.post('/auth/login', credentials);
         const { token, user } = response.data;
         localStorage.setItem('token', token);
-        return user;
+        return convertToAppUser(user);
     },
     
-    register: async (data: RegisterData): Promise<BackendUser> => {
-        const response = await api.post('/auth/register', data);
+    register: async (data: RegisterData): Promise<AppUser> => {
+        const response = await backendApi.post('/auth/register', data);
         const { token, user } = response.data;
         localStorage.setItem('token', token);
-        return user;
+        return convertToAppUser(user);
     },
     
     logout: () => {
@@ -66,22 +69,30 @@ export const authApi = {
 };
 
 export const userApi = {
-    getCurrentUser: async (): Promise<BackendUser> => {
-        const response = await api.get('/users/me');
-        return response.data;
+    getCurrentUser: async (): Promise<AppUser> => {
+        const response = await backendApi.get('/users/me');
+        return convertToAppUser(response.data);
     },
     
-    updateProfile: async (data: Partial<BackendUser>): Promise<BackendUser> => {
-        const response = await api.put('/users/me', data);
-        return response.data;
+    updateProfile: async (data: Partial<AppUser>): Promise<AppUser> => {
+        // Convert frontend user format to backend format
+        const backendData: any = {};
+        if (data.fullName) backendData.full_name = data.fullName;
+        if (data.username) backendData.username = data.username;
+        if (data.email) backendData.email = data.email;
+        if (data.profilePicture) backendData.profile_picture = data.profilePicture;
+        if (data.phone) backendData.phone = data.phone;
+        
+        const response = await backendApi.put('/users/me', backendData);
+        return convertToAppUser(response.data);
     },
     
-    searchUsers: async (query: string, limit: number = 10): Promise<BackendUser[]> => {
-        const response = await api.get('/users/search', {
+    searchUsers: async (query: string, limit: number = 10): Promise<AppUser[]> => {
+        const response = await backendApi.get('/users/search', {
             params: { q: query, limit }
         });
-        return response.data;
+        return response.data.map(convertToAppUser);
     }
 };
 
-export default api;
+export default backendApi;

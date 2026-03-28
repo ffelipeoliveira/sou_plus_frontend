@@ -20,7 +20,7 @@
     --text-color: #dedede;
     --error-color: #eb5555;
     --success-color: #34e2a0;
-    --color: #ff74a2;
+    --color: #74a0ff;
     --gradient: linear-gradient(110deg,#212121 0%, #2c263d 5%, #2b2c43 10%, #36314c 15%, #2c3443 20%, #282a2b 30% , #232626 100%);
   }
 }
@@ -34,13 +34,16 @@ body {
   color: var(--text-color);
   font-family: "Roboto", sans-serif;
 }
+
 body h1 {
   font-family: "Bebas Neue", sans-serif;
 }
+
 body a {
   color: var(--text-color);
   text-decoration: none;
 }
+
 body button, body input[type=submit], body input[type=reset] {
   background: none;
   color: inherit;
@@ -74,6 +77,7 @@ body button, body input[type=submit], body input[type=reset] {
   opacity: 0;
   transition: all 0.3s;
 }
+
 .appear-on-hover:hover {
   display: block;
   opacity: 100%;
@@ -82,6 +86,7 @@ body button, body input[type=submit], body input[type=reset] {
 .user-profile {
   font-family: "Bebas Neue", sans-serif;
 }
+
 .user-profile .appear-on-hover {
   padding-left: 50px;
 }
@@ -107,9 +112,11 @@ input:focus {
   outline: none;
   color: var(--text-color);
 }
+
 input:focus::-moz-placeholder {
   color: var(--text-color);
 }
+
 input:focus::placeholder {
   color: var(--text-color);
 }
@@ -164,6 +171,7 @@ input {
   color: var(--text-color);
   font-size: medium;
 }
+
 input:focus {
   border-bottom: 2px solid var(--text-color);
 }
@@ -194,6 +202,7 @@ textarea {
 .glow-on-hover {
   transition: all 0.3s;
 }
+
 .glow-on-hover:hover {
   transition: all 0.3s;
   filter: drop-shadow(0px 0px 10px var(--text-color));
@@ -207,11 +216,13 @@ textarea {
   font-size: 1.5em;
   margin-right: 10px;
 }
+
 .create-post:hover .create-post-background {
   transition: all 0.3s;
   filter: blur(30px), saturate(200%);
   opacity: 1;
 }
+
 .create-post .create-post-background {
   transition: all 0.3s;
   filter: blur(20px);
@@ -280,4 +291,4 @@ textarea {
   .post-details .post-head {
     margin-top: 20px;
   }
-}
+}/*# sourceMappingURL=index.css.map */

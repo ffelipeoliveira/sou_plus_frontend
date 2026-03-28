@@ -102,13 +102,6 @@ function Home() {
 
     return (
         <div className="home-container">
-            <div className="home-header">
-                <h1 className="bebas-neue">
-                    Olá, {user?.fullName || user?.username}!
-                </h1>
-                <p>Bem-vindo ao NOT REAL Chat</p>
-            </div>
-
             <div className="home-tabs">
                 <button 
                     className={`tab ${activeTab === 'conversations' ? 'active' : ''}`}

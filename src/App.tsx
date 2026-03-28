@@ -8,7 +8,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import MessageDetail from './pages/MessageDetail';
 import NotFound from './pages/NotFound';
-import Navbar from './components/layout/navbar/Navbar';
+import Navbar from './components/common/navbar/Navbar';
 import FullScreenLoading from './components/common/loading/FullScreenLoading';
 
 function App() {
